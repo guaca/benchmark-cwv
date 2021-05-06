@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+	<html class="sl-root decks export offline loaded">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Copy of Core Web Vitals: Benchmark de competidores con CrUX y BigQuery</title>
+
+		<meta name="description" content="Cómo hacer un benchmark de métricas de Core Web Vitals de tus competidores con los datos disponibles en el Chrome User Experience report y BigQuery">
+
+		<link rel="stylesheet" type="text/css" href="lib/offline-v2.css">
+
+
+
+	</head>
+	<body class="reveal-viewport theme-font-montserrat theme-color-grey-blue">
+		<div class="reveal">
+			<div class="slides">
+				<section data-id="a9bdb84b77c5b3a2078cfbab034c750d"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 47.5px; height: auto;" data-block-id="1d0b4b5113c5cafe20950b83cefd297b">
+    <div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 14; color: rgb(255, 255, 255); border-width: 1px;">
+        <h1><strong><span style="font-size:1.2em; text-shadow: 2px 2px #000000">CORE WEB VITALS:</span></strong></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-d12648" style="width: 385px; height: 385px; left: 38.25px; top: 279.5px; min-width: 1px; min-height: 1px;" data-block-id="975d7a17331e9f6626f678fe51bf7a0c">
+    <div class="sl-block-style" style="z-index: 12; opacity: 0.3;">
+        <div class="sl-block-content" style="z-index: 12;"><img data-natural-width="384" data-natural-height="384" style="" data-lazy-loaded="" data-src="crux/270b1210ea7e37b18a918f7dfb51f2ee.png"></div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-e5b209" data-block-id="45f463a654f223a5b809d0a93100530f" style="width: 416.5px; height: 416.5px; left: 505.25px; top: 268.5px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-style" style="z-index: 13; opacity: 0.3;">
+        <div class="sl-block-content" style="z-index: 13;"><img style="" data-natural-width="1200" data-natural-height="1200" data-lazy-loaded="" data-src="crux/75db31cc49d9c0f5f97b7f2ef179c8a6.png"></div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-ffaabd" data-block-id="e60e2b58691bccaa56395e6292ef111c" style="height: auto; width: 600px; left: 180px; top: 170.5px;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+        <h3 style="color:rgb(0, 255, 255)"><span style="color:#40E0D0"><span style="font-size:1.0em text-shadow: 2px 2px #000000">Benchmark de competidores con CrUX y BigQuery</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" data-block-id="8bef906247cf52a9e63838f57ac92f1c" style="height: auto; width: 220px; left: 3px; top: 660px;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" data-block-id="c847410de59fe47823d2595820063bff" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 10;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-block-id="f606613b73a8189e95b574fe923547c7" data-name="text-761285"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="698a06a4be1b437c58dcd38418bc89d8" data-auto-animate=""><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="11c7116af88a80e34de7937ebd5f97d2" data-name="text-553b6c">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10;">
+        <h1 style="text-shadow: 2px 2px #000000">¿Qué veremos hoy?</h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto;" data-block-id="22a4b6e724558e3b87edf8229946e505" data-name="text-ff0075">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+        <ul style="text-shadow: 2px 2px #000000">
+            <li class="fragment" data-fragment-index="0">Intro to Core Web Vitals</li>
+            <li class="fragment" data-fragment-index="1">Intro to CrUX</li>
+            <li class="fragment" data-fragment-index="2">Let's SQL it!</li>
+            <li class="fragment" data-fragment-index="3">Let's turn data into info</li>
+        </ul>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="29b701ff4311ae876b457db5db379f36"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="2a4a135a4f1e6987b8446e10c775d5c5"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="07407ccf7cdb8de54824f8f04a807355"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="368ff4dca88885917f1b547adb0bbe97"><div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: 140px; height: auto;" data-block-id="93398ba08ef61721c941ffecc1b777b8">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1 style="text-shadow: 2px 2px #000000">Intro to CWV</h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 360px; top: 280px; height: auto;" data-block-id="73d90e103bc8e56a15e7b6441f6f72e0">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec metus justo. Aliquam erat volutpat." style="z-index: 12; text-align: left;">
+        <p style="text-shadow: 2px 2px #000000">Qué son las Core Web Vitals, qué miden y por qué son importantes para SEO.</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-9ca64c" data-block-id="6e8df682e6e048085a593e276d48ed5f" style="height: auto; width: 320px; left: 0px; top: -40px;">
+    <div class="sl-block-style" style="z-index: 10; opacity: 0.7;">
+        <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; font-size: 500%; color: rgb(34, 34, 34);">
+            <p><span style="font-size:4.0em">1</span></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="dcb3fc8662a56f5e380083546b60d8c1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="ac9b7f2c320ebd3c2b3dbe4c0893554b"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="012524dd35ad35e1b2a6a2ec8b718d66"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="c8c49d460252dbae5e1efa2fbfce0dfb"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="a453ba6eaa56182ff6fa6fe08390f03d">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align: center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Intro to Core Web Vitals</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto;" data-block-id="3795c6a29abd1884788fde092f57e2d4">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 11; color: rgb(255, 255, 255);" dir="ui">
+        <p><span style="font-size:1.2em;text-shadow: 2px 2px #000000;">En mayo de 2020, Google anuncia las <span style="color:#40E0D0"><strong>Core Web Vitals</strong></span> como un conjunto de métricas relacionadas con la velocidad, la interactividad y la estabilidad visual con las que poder ayudar a medir la user experience en la web.</span></p>
+
+        <p><span style="font-size:1.2em; text-shadow: 2px 2px #000000;">Estas nuevas métricas están también disponibles en el <span style="color:#40E0D0"><strong>Chrome Uxer Experience report</strong></span>.</span></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="a25dba2f8af0257f7dfb363301623fb9"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="79616c664d365ecab6bc875b082bd470"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="108b943a823ffd1f4f88b7fd01415a87"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="97131f4a975d25711f19250dad67e626"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="0f3e708dedb78588a7041766d7833ab5">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Intro to Core Web Vitals</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-54d13a" style="width: 806.4px; height: 233.352px; left: 76.8px; top: 256.648px; min-width: 1px; min-height: 1px;" data-block-id="49b28b9f8e9e23bb228ff445ee47ec20">
+    <div class="sl-block-content" style="z-index: 11;"><img data-natural-width="1600" data-natural-height="463" style="" data-lazy-loaded="" data-src="crux/dac740e1d915014171e7ea2ff6422506.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="fe278c6a0f682cbe280ef8a54b024984"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="680596352c86aa38dbdacdd722c47902"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="59ad9c65981d81c986c55996acf35468"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="ae832a12ca339fd4d04475d04d154225"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="af0fb3720466b35987025f04781aabd0">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align: center;"><span style="font-size:0.9em; text-shadow: 2px 2px #000000">Intro to Core Web Vitals</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="image" data-name="image-f8afe5" data-block-id="3bf1e014d934d893a362b1885d9af227" style="width: 85px; height: 47.8757px; left: 75px; top: 348.507px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="1850" data-natural-height="1042" data-lazy-loaded="" data-src="crux/bc2823a220027b1b86d057b69d314b52.png"></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-8028fe" data-block-id="7a15332b52bc14fb674a86e430dbecf1" style="width: 61px; height: 61px; left: 80px; top: 419px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 12;"><img data-natural-width="128" data-natural-height="128" style="" data-lazy-loaded="" data-src="crux/7361109316b6cf326c0b385cc057b5da.png"></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-c53ecf" data-block-id="f754ece86988eb64b04e7633559e8b86" style="width: 58px; height: 58px; left: 78px; top: 489px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 13;"><img data-natural-width="150" data-natural-height="150" style="" data-lazy-loaded="" data-src="crux/2b31f692c72e972fd1e1bea701dec37e.png"></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-d12648" data-block-id="4a10258cbe2b82fa3a7e45703c75cfa9" style="width: 54px; height: 54px; left: 82px; top: 562px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 14;"><img data-natural-width="384" data-natural-height="384" style="" data-lazy-loaded="" data-src="crux/270b1210ea7e37b18a918f7dfb51f2ee.png"></div>
+</div>
+<div class="sl-block" data-block-type="line" data-name="line-2f6b66" data-block-id="fef9aeece4012c8b20df9adf6acf7e0b" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 720px; top: 165px;">
+    <div class="sl-block-content" data-line-x1="0" data-line-y1="480.5" data-line-x2="0" data-line-y2="0" data-line-color="#ffffff" data-line-start-type="none" data-line-end-type="none" style="z-index: 15;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="1" height="480.5" viewbox="0 0 1 480.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="480.5" x2="0" y2="0"></line><line class="line-element" stroke="#ffffff" stroke-width="4" x1="0" y1="480.5" x2="0" y2="0"></line></svg></div>
+</div>
+<div class="sl-block" data-block-type="line" data-name="line-ecae02" data-block-id="ba7e6ed5e11dc1f5c4f1535dc659ef1c" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 524.25px; top: 252px;">
+    <div class="sl-block-content" data-line-x1="0" data-line-y1="0" data-line-x2="387.75" data-line-y2="0" data-line-color="#ffffff" data-line-start-type="none" data-line-end-type="none" style="z-index: 16;" data-line-width="4px"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="387.75" height="1" viewbox="0 0 387.75 1"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="0" y1="0" x2="387.75" y2="0"></line><line class="line-element" stroke="#ffffff" stroke-width="4" x1="0" y1="0" x2="387.75" y2="0"></line></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-dbc49b" data-block-id="d86651d704aa098d6e970188082edf21" style="height: auto; width: 80px; left: 600px; top: 280px;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 80px; left: 600px; top: 420px;" data-block-id="6e9ff567f7b6db172c47403be5c4094c" data-name="text-7a13d3">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 80px; left: 600px; top: 560px;" data-block-id="f40e60f3587f99be6857749154606f05" data-name="text-a26025">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 19;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 80px; left: 760px; top: 490px;" data-block-id="b01e0de816ab207e916ca15fd5f3b8aa" data-name="text-a75e1e">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 20;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 80px; left: 760px; top: 420px;" data-block-id="b5bcc7dbf7a9c4934185bfc89350dd80" data-name="text-b0d37d">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 21;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 80px; left: 760px; top: 350px;" data-block-id="5f79b867281e7ff85c9b6bf24ecb51e4" data-name="text-1a2019">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 22;">
+        <h3><span style="font-size:1.0em"><span style="color:rgb(255, 255, 255)">✓</span></span></h3>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-19ca25" data-block-id="4a20d3430a958134ad5cf0c18c60b321" style="height: auto; width: 180px; left: 524.25px; top: 193.5px;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 23;">
+        <p style="text-shadow: 2px 2px #000000;"><strong>Field Data</strong></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 180px; left: 732px; top: 193.5px;" data-block-id="9203a701797b1d438a42b0583a7f2cb3" data-name="text-c5da72">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 24;">
+        <p style="text-shadow: 2px 2px #000000;"><strong>Lab Data</strong></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-42a1bb" data-block-id="b3142e1cdc91a8a1e873a78809d0da38" style="width: 89px; height: 89px; left: 66px; top: 259.507px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 25;"><img data-natural-width="400" data-natural-height="400" style="" data-lazy-loaded="" data-src="crux/b8cce4ece86207f7cdab6096a982cc0d.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-2cc4d4" data-block-id="721b78be4df97d1acf168ba31b04f481" style="height: auto; width: 340px; left: 160px; top: 285.5px;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 26;">
+        <p>Google Search Console</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 340px; left: 160px; top: 348.507px;" data-block-id="7323eecd5ef7a5fe3ad1585f9a5c3a7c" data-name="text-952a3c">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 27;" dir="ui">
+        <p>Lighthouse</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 340px; left: 160px; top: 419px;" data-block-id="f67797d0b5556e574b29a1d808aecbb3" data-name="text-388b40">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 28;" dir="ui">
+        <p>PageSpeed Insights</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 340px; left: 160px; top: 490px;" data-block-id="44365e358da811f810e63d6fc5dc104c" data-name="text-d52381">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 29;" dir="ui">
+        <p>Chrome Dev Tools</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 340px; left: 160px; top: 562px;" data-block-id="38468dcb4b16cf9496836abc8fa00dc7" data-name="text-78e669">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 30;" dir="ui">
+        <p>Chrome UX Report</p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="465d44834c25985e0d9baa588a69e523"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 32;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="9b4d4ec4753fa6ff47c450ac7807b18e"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 31;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="dc0c465820c9d8980ddd0da7cfa88802"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 33;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="edb54c0fbb9182bd1f040776b1597b3c"><div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: 140px; height: auto;" data-block-id="c5a8bee04494a76a8718a9d500738daf">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1 style="text-shadow: 2px 2px #000000;">Intro to CrUX</h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 360px; top: 280px; height: auto;" data-block-id="b277abdc1a508dd3f0014c9941bd6213">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec metus justo. Aliquam erat volutpat." style="z-index: 12; text-align: left;">
+        <p style="text-shadow: 2px 2px #000000;">Qué es el Chrome User Experience report, qué información tiene y cómo puedo explorar sus datos. </p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-9ca64c" style="height: auto; width: 320px; left: 0px; top: -40px;" data-block-id="313ec1c027adb2a4b81f3ec76ae2f6f4">
+    <div class="sl-block-style" style="z-index: 10; opacity: 0.7;">
+        <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; font-size: 500%; color: rgb(34, 34, 34);">
+            <p><span style="font-size:4.0em">2</span></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="8167bff9eec2a1945cc60e40c701959c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="75426002f96a8971a0b7e8e06bb80732"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="f62367e55554c4d893274037ae6ce4be"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="0f06d9d59cbe99ef35974178616192ae"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="b01218b95cc8b89070d5a2f94d55a93d">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000"><span style="font-size:0.9em">Intro to CrUX</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-shadow: 2px 2px #000000;" data-block-id="1a03131b0d7c9631f76848ae54d076ac">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 11; color: rgb(255, 255, 255);" dir="ui">
+        <p>En octubre de 2017, Google pone a nuestra disposición el <span style="color:#40E0D0"><strong>Chrome User Experience report</strong></span> (CrUX), un dataset público en el que tenemos disponibles métricas de UX de los usuarios reales de Chrome.</p>
+
+        <p>Con el anuncio de las <span style="color:#40E0D0"><strong>Core Web Vitals</strong></span> el pasado mes de mayo, estas se añaden también al CrUX.</p>
+
+        <p>Todos los datos del CrUX los tenemos disponibles para su exploración en <span style="color:#40E0D0"><strong>BigQuery</strong></span>.</p>
+
+        <p> </p>
+
+        <p><span style="font-size:0.9em"><a href="https://web.dev/chrome-ux-report-bigquery/" target="_blank"><span style="color:#ADD8E6; text-decoration:underline"><em>Using the Chrome UX Report on BigQuery</em></span></a></span></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="c45e49622d5b0723f7195819b0a65f8e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="157d2da53bfc55eea441bfaae6bf25fc"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="67602b970ec34a15964fe08a1452faf5"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="73b70328cb04be99d041ab915a07a81d"><div class="sl-block" data-block-type="table" data-name="table-fddd21" data-block-id="aaad30db5119889438ef012b24f3e56f" style="height: auto; min-width: 120px; width: 800px; left: 80px; top: 194.5px;">
+    <div class="sl-block-content" style="z-index: 10; text-shadow: 2px 2px #000000;" data-table-cols="2" data-table-rows="7">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        <div style="color:#40E0D0">Important Metrics</div>
+                    </th>
+                    <th>
+                        <div style="color:#40E0D0">Dimensions</div>
+                    </th>
+                </tr>
+                <tr>
+                    <td>First contentful paint (FCP)</td>
+                    <td>Origin</td>
+                </tr>
+                <tr>
+                    <td>Largest contentful paint (LCP)</td>
+                    <td>Country</td>
+                </tr>
+                <tr>
+                    <td>First input delay (FID)</td>
+                    <td>Device Type</td>
+                </tr>
+                <tr>
+                    <td>Time to Interactive (TTI)</td>
+                    <td>Effective Connection Type</td>
+                </tr>
+                <tr>
+                    <td>Total blocking time (TBT)</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Cumulative layout shift (CLS)</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="84d9fe3e294f9a2984bd4489da6df341" data-name="text-088091">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000"><span style="font-size:0.9em">Intro to CrUX</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="355708f2c9899e5e2d236776237d1606"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="ba331b3058fbe4f7bf14aee8cf63ecf2"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="c6a7000f433cdcd411ed33f63ce0326a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="12be3cdc64952fe6a4b9fcefb5642ed2"><div class="sl-block" data-block-type="image" data-name="image-b1b87b" data-block-id="6f06dd082cfe83cd683c144d92a9c561" style="width: 922.032px; height: 484.62px; left: 18.8px; top: 175.078px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 10; border-style: solid; border-width: 1px; border-color: rgb(170, 170, 170);"><img style="" data-natural-width="2500" data-natural-height="1314" data-lazy-loaded="" data-src="crux/df71cdcbe54f0a9a4348f24ac27e1e00.png"></div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-9a6048" data-block-id="9d5dad0490ba87c8a92c3a2eccf891c4" style="width: 83px; height: 16px; left: 205.5px; top: 184px;">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(102, 102, 102)" data-shape-stretch="true" style="z-index: 11;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 83 16">
+
+            
+        <rect width="83" height="16" rx="0" ry="0" class="shape-element" fill="rgb(102, 102, 102)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 83px; height: 16px; left: 44.5px; top: 435px;" data-block-id="c04859224d4c869dfca051ed37bff4ba" data-name="shape-94c739">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(102, 102, 102)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 83 16">
+
+            
+        <rect width="83" height="16" rx="0" ry="0" class="shape-element" fill="rgb(102, 102, 102)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="0c71f2b501aab55f3625e3cefa9216d3" data-name="text-729f38">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 13;">
+        <h1 style="text-align: center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Intro to CrUX</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-6a59e6" data-block-id="47f1dfc8f8925c6f5554ce0ccf239793" style="width: 112px; height: 208.698px; left: 30px; top: 451px;">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 14;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 112 209">
+
+
+            
+            
+        <defs><clippath id="shape-mask-1-1599825252940"><rect width="112" height="208.698" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="112" height="208.698" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-1-1599825252940)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="a26821107b2ec077c25991c2f8d8796c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="5a6dafa0fbe6e0afaaab18b6ff971097"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 15;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="10800fc0e42391f3595777d96d75f828"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="eb8b88ec092edb5d90d2c178cda34c3a"><div class="sl-block" data-block-type="shape" data-name="shape-9a6048" style="width: 83px; height: 16px; left: 198.5px; top: 184px;" data-block-id="a7791e89463eca8ddeb6d1f55d224e62">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(102, 102, 102)" data-shape-stretch="true" style="z-index: 11;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 83 16">
+            
+        <rect width="83" height="16" rx="0" ry="0" class="shape-element" fill="rgb(102, 102, 102)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 83px; height: 16px; left: 38.5px; top: 435px;" data-name="shape-94c739" data-block-id="030951ef1b3130adb6fe6814189f883d">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(102, 102, 102)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 83 16">
+            
+        <rect width="83" height="16" rx="0" ry="0" class="shape-element" fill="rgb(102, 102, 102)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-50ad5d" style="width: 922.032px; height: 488.677px; left: 18.8px; top: 175.078px; min-width: 1px; min-height: 1px;" data-block-id="65004b03e6e005b33f67d403c82e49b9">
+    <div class="sl-block-content" style="z-index: 10;"><img style="" data-natural-width="2500" data-natural-height="1325" data-lazy-loaded="" data-src="crux/c1bf32442044edadf9c4327bdc25a4b6.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="2c2a818df09e3144823e12edca181913" data-name="text-00d1eb">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 13;">
+        <h1 style="text-align: center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Intro to CrUX</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-6a59e6" style="width: 112px; height: 208.698px; left: 30px; top: 451px;" data-block-id="f6bc0851461eba215b8a2c532da80ea5">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 14;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 112 209">
+
+
+            
+            
+        <defs><clippath id="shape-mask-2-1599825359615"><rect width="112" height="208.698" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="112" height="208.698" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-2-1599825359615)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 721px; height: 206.755px; left: 207px; top: 457px;" data-block-id="1a6128962e9784ed3d45f4a51f65ecdd" data-name="shape-ba8bcf">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 15;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 721 207">
+
+
+            
+            
+        <defs><clippath id="shape-mask-3-1599825374438"><rect width="721" height="206.755" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="721" height="206.755" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-3-1599825374438)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="2e4b4bbe6b15e3691e2f7fe01932ebd5"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="259a850b40bc67819b19f6050ce516f7"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 16;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="8a43e127a11f31f827e3fb08e326ef59"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="8396b60c74b1326271b2b975530cbcdc"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="835e118f81ced10b8a71cdddb4713f57">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1 style="text-align: center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Intro to CrUX</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-9a6048" style="width: 83px; height: 16px; left: 198.5px; top: 170px;" data-block-id="698c5a104ef9bdff1c2eba66e38a3df3">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(102, 102, 102)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 83 16">
+            
+        <rect width="83" height="16" rx="0" ry="0" class="shape-element" fill="rgb(102, 102, 102)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-7a8bcf" data-block-id="77fa549ef7899279a854981b00bcaf1d" style="width: 922.032px; height: 497.16px; left: 18.8px; top: 163.078px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 10;"><img style="" data-natural-width="2500" data-natural-height="1348" data-lazy-loaded="" data-src="crux/ed5fcef3bab03899efefd1c4598e1c82.png"></div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-6a59e6" style="width: 159.5px; height: 193.238px; left: 39px; top: 467px;" data-block-id="2c5771b7df0b76303d793e00019c6fb1">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 13;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 160 193">
+
+
+            
+            
+        <defs><clippath id="shape-mask-4-1599825416718"><rect width="159.5" height="193.238" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="159.5" height="193.238" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-4-1599825416718)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 115.5px; height: 29px; left: 66px; top: 589px;" data-block-id="7b4547a041fc3472fff71a335fe88b44" data-name="shape-e0bec6">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 14;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 116 29">
+
+
+            
+            
+        <defs><clippath id="shape-mask-5-1599825441758"><rect width="115.5" height="29" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="115.5" height="29" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-5-1599825441758)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 115.5px; height: 29px; left: 66px; top: 548px;" data-block-id="1c11e310aec13240d8b703c7fcff6972" data-name="shape-702ff0">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 15;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 116 29">
+
+
+            
+            
+        <defs><clippath id="shape-mask-1-1601389020430"><rect width="115.5" height="29" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="115.5" height="29" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-1-1601389020430)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="066042a6789e44ddf96466a1ff4fb7d4"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="cbc949030020273c61fa37a0dcc705a4"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 16;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="518102f4c30eb9c3e7d889ac27662f6f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 18;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="a561cc407b691ee26323083519ac7740"><div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: 140px; height: auto;" data-block-id="db7914fd0ad36d6464140cee50ec87fb">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1 style="text-shadow: 2px 2px #000000;">Let's SQL it!</h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 360px; top: 280px; height: auto;" data-block-id="67781cdd6467fc5c525010b10454176e">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec metus justo. Aliquam erat volutpat." style="z-index: 12; text-align: left;" dir="ui">
+<p>SQL es un lenguaje de consulta estructurada con el que podemos explorar y filtrar los datos de una base de datos y extraer la información que necesitamos. </p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-9ca64c" style="height: auto; width: 320px; left: 0px; top: -40px;" data-block-id="00dc510d8b42917b141a7ceff0f4aacb">
+    <div class="sl-block-style" style="z-index: 10; opacity: 0.7;">
+        <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; font-size: 500%; color: rgb(34, 34, 34);">
+            <p><span style="font-size:4.0em">3</span></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="5f6efbc9b778b90529151a830881caed"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="31157d98300e50785f8ba128e378e288"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="f9f6ef3d11f8a038ad84e8ed7e96af44"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="a86a419b93c99a2632a2be9b3ea76ce7"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="e06e6d48ee68d14fe6c9526ea63aad06">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto; text-shadow: 2px 2px #000000;" data-block-id="52ef4b5f6d8c4ae94cb6a305accd82e4" data-name="text-230d24">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+<ul>
+	<li class="fragment" data-fragment-index="0">¿Qué información quiero?</li>
+	<li class="fragment" data-fragment-index="1">¿Qué datos necesito?</li>
+	<li class="fragment" data-fragment-index="2">¿Dónde están estos datos?</li>
+	<li class="fragment" data-fragment-index="3">¿Y cómo los puedo conseguir?</li>
+</ul>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="f03e5c7a0703ece5fa61e46f981409ed"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="0654d4ce199a95e6fe03388bab1bf81f"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="d2ceb19cc15530a46e12d3f86e1ea444"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="a314d85331121628255768532c072cbc"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="54b7866ffa6ac168dd23ccb1111d7066">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 180px; height: auto;" data-name="text-230d24" data-block-id="b06674494a0894250dc6a3ec61d57cdc">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+        <p><span style="color:#40E0D0; text-shadow: 2px 2px #000000;">¿Qué información quiero?</span></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-eaf049" data-block-id="3b88a4f67c8b9789922b9edfc3b85282" style="height: auto; width: 600px; left: 180px; top: 300.5px;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-shadow: 2px 2px #000000;">
+        <ul>
+            <li class="fragment" data-fragment-index="0" style="text-align:left">Conocer el estado actual de las <span style="color:#40E0D0"><strong>Core Web Vitals</strong></span> de mi web vs las de mis competidores.</li>
+            <li class="fragment" data-fragment-index="1" style="text-align:left">
+                <span style="color:#40E0D0"><strong>Evolución</strong></span> de las mismas durante el 2020 para detectar si algún competidor está trabajando en ellas.</li>
+            <li class="fragment" data-fragment-index="2" style="text-align:left">Tener la información desglosada por <span style="color:#40E0D0"><strong>dispositivo</strong></span>.</li>
+        </ul>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="19fc1b54b7b0b70d03e483c02dfa6108"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="ab3195345106a38744047e2a32373598"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="6a676c13b973a3d037362af0851c3531"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="642aa0ae93de5b2f00fb3b57bf55485d"><div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="f3dc9daad987f344ba448bbef93fabe2">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center; text-shadow: 2px 2px #000000;"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 180px; height: auto; text-shadow: 2px 2px #000000;" data-name="text-230d24" data-block-id="24c4b797218e2182ea99767fc2276f90">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+<p><span style="color:#40E0D0">¿Qué datos necesito?</span></p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-eaf049" style="height: auto; width: 600px; left: 180px; top: 296px;" data-block-id="95366d68de407d06c57fb641763740fe">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-shadow: 2px 2px #000000;">
+<ul>
+	<li class="fragment" data-fragment-index="0" style="text-align:left">
+<span style="color:#40E0D0"><strong>LCP</strong></span> de cada  uno de los players durante 2020.</li>
+	<li class="fragment" data-fragment-index="1" style="text-align:left">
+<span style="color:#40E0D0"><strong>FID</strong></span> de cada uno de los player durante 2020.</li>
+	<li class="fragment" data-fragment-index="2" style="text-align:left">
+<span style="color:#40E0D0"><strong>CLS</strong></span> de cada uno de los players durante 2020.</li>
+	<li class="fragment" data-fragment-index="3" style="text-align:left">Datos desglosados por tipo de <strong><span style="color:#40E0D0">dispositivo</span></strong>
+</li>
+</ul>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="e9547dbdf2e3644e1d486233b1b3825b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="ca7c6b4a14e63f5f7f43298bb5f2a008"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="4419aad427ded4a0ac9ef821f2c97a5a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="9d2231564db1152cdc4eb69b3ab3c5d1"><div style="text-shadow: 2px 2px #000000;">
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-block-id="30fc1a30af6874fe7caca6c042f1d3b3">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 180px; height: auto;" data-name="text-230d24" data-block-id="d70e1605d056ee08ed9835ed7274a291">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+<p><span style="color:#40E0D0">¿Dónde están estos datos?</span></p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-eaf049" style="height: auto; width: 600px; left: 180px; top: 300.5px;" data-block-id="26dda84fb008fb9c4453101662b1c7ad">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: center;">
+<p style="text-align:left">En este ejemplo concreto, podemos aprovechar los datos precalculados que tenemos en el dataset "<span style="color:#40E0D0"><strong><em>materialized</em></strong></span>" para realizar queries mucho más ligeras y rápidas. </p>
+</div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="48acafafb4b6a48075bcc39b6d9d2786"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="166ba86d625a4cac61a6eed503c073cf"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="b6de5c3c3767c28c15789d78a856240c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="b5536e2a59907ad10fe27c8e304b08df"><div style="text-shadow: 2px 2px #000000;">
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 33px; height: auto;" data-block-id="3134d9deb3f9662e4d4d25c07a967231" data-name="text-a019f9">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 143px; height: auto;" data-name="text-230d24" data-block-id="1f58fcfbdd28687d93ee0c01bcb884cc">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; font-size: 180%;">
+<p><span style="color:#40E0D0">¿Y cómo los puedo conseguir?</span></p>
+</div>
+</div>
+
+
+<div class="sl-block" data-block-type="image" data-name="image-db0ec4" style="width: 736.35px; height: 414.845px; left: 111.825px; top: 231.155px; min-width: 1px; min-height: 1px;" data-block-id="a0cf462c6433a32f74c272a2ceb4e004">
+    <div class="sl-block-content fragment" style="z-index: 12;" data-fragment-index="0"><img style="" data-natural-width="1278" data-natural-height="720" data-lazy-loaded="" data-src="crux/05f70fb5c73a92af2f625c8be772c53d.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-97b32c" style="height: auto; width: 736.35px; left: 111.825px; top: 231.155px;" data-block-id="c8442075586ef631ee97db6eb3c3e24a">
+    <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0">
+        <p style="font-size:3.5em"><strong>QUERIES</strong></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 736.35px; left: 111.825px; top: 568px;" data-name="text-f0abff" data-block-id="59df4920001e9d62147f3d4611a09e42">
+    <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;" data-fragment-index="0">
+        <p style="font-size:2em"><strong>QUERIES EVERYWHERE</strong></p>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="fbf8a9bfdaa32871def18a107fccd7bc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="9ed1114d577464885773105b7bc98978"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 15;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="5f53c74dad1a041ebf1b04aaef227cb1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="9124cd9ebd3c22c1a90eed63bff3abde"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-name="text-a019f9" data-block-id="7dc51258caa23082ef7a65242e681d44">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="code" data-name="code-b4214e" data-block-id="7c0e49e5116b80d55a924216f5105f48" style="width: 889px; height: 470px; left: 35.5px; top: 175px;">
+    <div class="sl-block-content notranslate" data-highlight-theme="ir-black" data-code-frame="none" style="z-index: 11;">
+        <pre style="font-size: 32px; line-height: 38px;" class="sql"><code data-line-numbers="">SELECT
+ [fields]
+FROM
+ [dataset]
+WHERE
+ [conditions]
+ORDER BY
+ [order]</code></pre>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="953faaa0a93b61989666cba588c56147"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="e871257f2fee95ce5070fc1ee7bce854"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="f811899ddf0b5528ede52551167e1a50"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="8629f4d208e002d9372aa720b5a37dfc"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-name="text-a019f9" data-block-id="f00fced23443a0c4c97db26aab00695f">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="code" data-name="code-b4214e" style="width: 889px; height: 470px; left: 35.5px; top: 175px;" data-block-id="2cc74ee069dff83ee6c82d794333d200">
+    <div class="sl-block-content notranslate" data-highlight-theme="ir-black" data-code-frame="none" style="z-index: 11;">
+        <pre style="font-size: 16px; line-height: 19px;" class="sql"><code data-line-numbers="">SELECT
+  origin,
+  device,
+  date,
+  fast_lcp AS good_lcp,
+  avg_lcp AS ni_lcp,
+  slow_lcp AS poor_lcp,
+  p75_lcp,
+  fast_fid AS good_fid,
+  avg_fid AS ni_fid,
+  slow_fid AS poor_fid,
+  p75_fid,
+  small_cls AS good_cls,
+  medium_cls AS ni_cls,
+  large_cls AS poor_cls,
+  p75_cls
+FROM
+  `chrome-ux-report.materialized.device_summary`
+WHERE
+  date &gt;= '2020-01-01' AND
+  origin IN ('https://www.zara.com', 'https://www2.hm.com', 'https://www.desigual.com')
+ ORDER BY
+  date desc,
+  origin asc</code></pre>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="d1aff42ba6c565898b4ecdddfa0de88e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="a0595ccda0e6c03d3e11e42ab35e1a8f"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="3c6cce695fda773595f801fdd51957e4"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="106b2cfe6e5492ffee96ff2c17cae896"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-name="text-a019f9" data-block-id="116212cdfe4dc3d1eba6e248a4a9a2d4">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="image" data-name="image-4a3e66" data-block-id="4974f2be5a1106d827ab21b7935e6f62" style="width: 806.4px; height: 387.3px; left: 76.8px; top: 210px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="989" data-natural-height="475" data-lazy-loaded="" data-src="crux/ac0514f88f66b527524dc2335e5b2563.png"></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 229px; height: 32px; left: 653px; top: 570.3px;" data-name="shape-e0bec6" data-block-id="024b1c3ced4ace7b113f036d889908d9">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 12;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 229 32">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-2-1599906037764"><rect width="229" height="32" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="229" height="32" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-2-1599906037764)"></rect></svg></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="a3593fd487a2848dc05a4fbb69ba9326"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="6e5a5620771dfb7d54942f8cb38a79b9"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="0040779cd4b344a9b060998609e422f3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="515cec2b14f1244ba5962b5f26f26550"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 44px; height: auto;" data-name="text-a019f9" data-block-id="2d958d572d0174e5bc87bcbe5cf59579">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="image" data-name="image-50f63a" data-block-id="9ae18604348025c62ab55c37292f9479" style="width: 709.974px; height: 505px; left: 125.013px; top: 148px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 11;"><img data-natural-width="1098" data-natural-height="781" style="" data-lazy-loaded="" data-src="crux/2f62e2d5b3b3c4ac967a1e07dcc6071a.png"></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 203.5px; height: 29px; left: 247px; top: 326px;" data-name="shape-e0bec6" data-block-id="7e98ff746e7da160c9a5e711f946aa4a">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 12;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="2"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 204 29">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-1-1599906009691"><rect width="203.5" height="29" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="203.5" height="29" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-1-1599906009691)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 194.987px; height: 29px; left: 125.013px; top: 355px;" data-block-id="7362ad87fb201bd63f13f5ab584d9ab5" data-name="shape-74da5d">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 13;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 195 29">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-3-1599906100623"><rect width="194.987" height="29" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="194.987" height="29" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-3-1599906100623)"></rect></svg></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 292.5px; height: 25px; left: 196.5px; top: 301px;" data-block-id="901a8d2ce69e5b64de1a140579083fd9" data-name="shape-ee5da0">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 14;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 293 25">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-1-1601557489103"><rect width="292.5" height="25" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="292.5" height="25" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-1-1601557489103)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="f58e06b0c77d9365a340fa59397ca2c7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="673c39e5903cac8f31d90ffba9b27bd4"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 15;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="d025be0a78fd1f8870f08b3e0031d92c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 17;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="bd8c767c95c730b728655c7c451ef802"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 45px; height: auto;" data-name="text-a019f9" data-block-id="e23e8a18bab31e20ac9ed6f4fe829868">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="image" data-name="image-dcf273" style="width: 806.4px; height: 375.053px; left: 76.8px; top: 185px; min-width: 1px; min-height: 1px;" data-block-id="c8890c4edefa6811f22ef8cae6a1aede">
+    <div class="sl-block-content" style="z-index: 11;"><img data-natural-width="1103" data-natural-height="513" style="" data-lazy-loaded="" data-src="crux/f71a8f6c466f9db00803fe7736645af4.png"></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="a5b1936bb826b74e84f60ea8f948a5ac"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="3006dea0d5cf5e9485a727f1346091d0"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="d49f8ae262653ee6f552c4d439a384ad"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="c715df773443806a5323ce9701982d96"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 43px; height: auto;" data-name="text-a019f9" data-block-id="b4347798ae56f14a46aa96e51dca854a">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="image" data-name="image-6134c1" style="width: 806.4px; height: 351.235px; left: 76.8px; top: 183px; min-width: 1px; min-height: 1px;" data-block-id="478cbd73fdff109b5a2721a36c0de3f6">
+    <div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="1063" data-natural-height="463" data-lazy-loaded="" data-src="crux/a4a59f2df69c540e441ec0a2ef234b53.png"></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="133d88e6c17c7d53b6a201176bbba34f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="1764928dd10f2c73558c1801f1ad01e0"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="c088aa9ee17b91023e07b48c999ed184"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="39fa35632f326447d8ebafc8bc81849b"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 560px; left: 360px; top: 140px; height: auto;" data-block-id="731522a34d5015ee866f0adde6ce377c">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+        <h1>Let's turn data into info!</h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 480px; left: 360px; top: 350px; height: auto;" data-block-id="25a51cb0860a09c9755d0590beedf238">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nec metus justo. Aliquam erat volutpat." style="z-index: 12; text-align: left;">
+<p>La visualización de datos es fundamental para convertir los datos en información fácilmente consumible.</p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-9ca64c" style="height: auto; width: 320px; left: 0px; top: -40px;" data-block-id="389bf00b69a4c55ff591ca66afe57431">
+    <div class="sl-block-style" style="z-index: 10; opacity: 0.7;">
+        <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; font-size: 500%; color: rgb(34, 34, 34);">
+            <p><span style="font-size:4.0em">4</span></p>
+        </div>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="45aaf4a498efc410bf21e4f3085df041"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="891f21326af8bc905177010335d1a4b4"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 13;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="dd1c711a76b973e2e88610acf695c5ec"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="7cad2d2ea2ce364d2dfba604ec57c06a"><div style="text-shadow: 2px 2px #000000;">
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 44px; height: auto;" data-block-id="e552d1971390ae84aa3c3a26f3507248">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's turn data into info!</span></h1>
+    </div>
+</div>
+
+
+
+<div class="sl-block" data-block-type="iframe" data-name="iframe-b307f7" data-block-id="ed71e2a4801bd6a6aa72a58a933a828e" style="width: 883px; height: 455px; left: 40px; top: 184px;">
+    <div class="sl-block-content" style="z-index: 11;"><iframe webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-pointer-lock allow-presentation" data-src="https://datastudio.google.com/embed/reporting/70935eb4-daac-496f-90cc-7634d260d11b/page/E5ifB"></iframe></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="c8ebc29a505f48ac65d5cd4c8bb2ffdf"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="54e1ffad7285e46ad61e5937641c6617"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="7488b3249523f8332b789929b089e0fc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="9be6a6dad2cf08f6137f3fd7414499f5"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 21.5px; height: auto;" data-block-id="15b7319e9a1ce4450a2144ff43374ad9">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's turn data into info!</span></h1>
+    </div>
+</div>
+
+
+
+<div class="sl-block" data-block-type="text" data-name="text-206c26" style="height: auto; width: 230.212px; left: 73.6px; top: 398.679px;" data-block-id="551daa65ce92299d71477c6b985aa4dc">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+        <p style="text-align:left">
+            <font color="#40e0d0"><strong>Phone</strong></font>
+        </p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-848acc" data-block-id="2f67ae00654b74a05cb4b0de5d98e8bf" style="width: 806.4px; height: 222.679px; left: 73.6px; top: 156px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 12;"><img style="" data-natural-width="1492" data-natural-height="412" data-lazy-loaded="" data-src="crux/1e14983db876a9ac7fd001ac1dc81b76.png"></div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-7c78b7" data-block-id="20e7b5fca77c94880944ae95412c211e" style="width: 806.4px; height: 223.07px; left: 73.6px; top: 437.679px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 13;"><img style="" data-natural-width="1493" data-natural-height="413" data-lazy-loaded="" data-src="crux/5ccb39971b522ab2945e7d75183eae95.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 230.212px; left: 73.6px; top: 117px;" data-block-id="59a6497f2551be836ac41c5dd7a34e98" data-name="text-efdb48">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;" dir="ui">
+        <p style="text-align:left"><span style="color:#40E0D0"><strong>Desktop</strong></span></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-d79106" data-block-id="3dd85ffe1da1fc8dff5eea2c0014575a" style="height: auto; width: 101px; left: 341.732px; top: 108.344px;">
+    <div class="sl-block-style" style="z-index: 15; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15; color: rgb(255, 0, 0);" data-fragment-index="1">
+            <p><strong>90%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 37px; left: 145px; top: 179px;" data-name="shape-e0bec6" data-block-id="cb4a207649a98fc59989bd5a9901ae36">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 16;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="0"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 37">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-5-1599910894738"><rect width="219.277" height="37" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="37" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-5-1599910894738)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="line" data-name="line-0e0410" data-block-id="60aa7946d3c1e4d300f4983664ee7b57" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 320px; top: 147px;">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 17;" data-line-width="5px" data-fragment-index="1"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 37px; left: 145px; top: 460px;" data-block-id="7757e2348c91f0227ab026fde813ff0c" data-name="shape-29568f">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 18;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="2"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 37">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-6-1599910971763"><rect width="219.277" height="37" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="37" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-6-1599910971763)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 101px; left: 341.732px; top: 391.085px;" data-block-id="499a8b83856e76c2884280578db56b77" data-name="text-fd1a32">
+    <div class="sl-block-style" style="z-index: 19; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 19; color: rgb(255, 0, 0);" data-fragment-index="2">
+            <p><strong>5%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 320px; top: 429.741px;" data-block-id="db8a6dfd83baad274660ec42834b3050" data-name="line-947719">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 20;" data-line-width="5px" data-fragment-index="2"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 101px; left: 595.732px; top: 108.344px;" data-block-id="39794085a51986e77a9cd2564cc1dcc1" data-name="text-43a304">
+    <div class="sl-block-style" style="z-index: 21; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 21; color: rgb(255, 0, 0);" data-fragment-index="3">
+            <p><strong>10%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 37px; left: 399px; top: 179px;" data-block-id="ea79e83ce539f7b482e6fbd10221e670" data-name="shape-d16cfb">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 22;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="3"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 37">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-7-1599911160051"><rect width="219.277" height="37" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="37" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-7-1599911160051)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 574px; top: 147px;" data-block-id="7810cdf6e0aef1462098508f293014dd" data-name="line-0dab2d">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 23;" data-line-width="5px" data-fragment-index="3"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 37px; left: 399px; top: 460px;" data-block-id="313d29aac283cb4755de86a2186cd757" data-name="shape-b57940">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 24;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="4"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 37">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-8-1599911201424"><rect width="219.277" height="37" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="37" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-8-1599911201424)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 101px; left: 595.732px; top: 391.085px;" data-block-id="013f3322584167a6c243450c72d5ca85" data-name="text-470c14">
+    <div class="sl-block-style" style="z-index: 25; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 25; color: rgb(255, 0, 0);" data-fragment-index="4">
+            <p><strong>86%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 574px; top: 429.741px;" data-block-id="44ec97bc1edd6b8867b13d094da67fcf" data-name="line-6036fd">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 26;" data-line-width="5px" data-fragment-index="4"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 101px; left: 853.732px; top: 108.344px;" data-block-id="f080812a33dd5275a06824452a1214a8" data-name="text-57aa53">
+    <div class="sl-block-style" style="z-index: 27; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 27; color: rgb(255, 0, 0);" data-fragment-index="5">
+            <p><strong>51%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 37px; left: 659px; top: 179px;" data-block-id="f439ab4aba89bea12bac502090b58836" data-name="shape-87654b">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 28;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="5"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 37">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-9-1599911258538"><rect width="219.277" height="37" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="37" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-9-1599911258538)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 834px; top: 147px;" data-block-id="d7dd6d14f91b250e69387e63127d7c1b" data-name="line-2033eb">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 29;" data-line-width="5px" data-fragment-index="5"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+<div class="sl-block" data-block-type="shape" style="width: 219.277px; height: 46px; left: 659px; top: 460px;" data-block-id="84d902ed59562713ece24b39ee9dc288" data-name="shape-aa5542">
+    <div class="sl-block-content fragment" data-shape-type="rect" data-shape-fill-color="rgba(0, 0, 0, 0)" data-shape-stretch="true" style="z-index: 30;" data-shape-stroke-color="#ff0000" data-shape-stroke-width="5px" data-fragment-index="6"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 219 46">
+
+
+
+
+            
+            
+        <defs><clippath id="shape-mask-10-1599911258545"><rect width="219.277" height="46" rx="0" ry="0" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10"></rect></clippath></defs><rect width="219.277" height="46" rx="0" ry="0" class="shape-element" fill="rgba(0, 0, 0, 0)" stroke="#ff0000" stroke-width="10" clip-path="url(#shape-mask-10-1599911258545)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 101px; left: 853.732px; top: 391.085px;" data-block-id="6a00d71940f33f2beaff6f021e0add29" data-name="text-b4d274">
+    <div class="sl-block-style" style="z-index: 31; transform: rotate(-15deg);">
+        <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 31; color: rgb(255, 0, 0);" data-fragment-index="6">
+            <p><strong>45%</strong></p>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="line" style="width: auto; height: auto; min-width: 0px; min-height: 0px; left: 834px; top: 429.741px;" data-block-id="bbdc75c36e0871d33562ca3b39aa7263" data-name="line-da937c">
+    <div class="sl-block-content fragment" data-line-x1="36.81200000000001" data-line-y1="0" data-line-x2="0" data-line-y2="25.5" data-line-color="#ff0000" data-line-start-type="none" data-line-end-type="line-arrow" style="z-index: 32;" data-line-width="5px" data-fragment-index="6"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveaspectratio="xMidYMid" width="36.81200000000001" height="25.5" viewbox="0 0 36.81200000000001 25.5"><line stroke="rgba(0,0,0,0)" stroke-width="15" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><line class="line-element" stroke="#ff0000" stroke-width="5" x1="37.31200000000001" y1="0.5" x2="3.5826417935062844" y2="23.86462659637047"></line><path style="fill: rgba(0,0,0,0);" stroke="#ff0000" stroke-width="5" transform="translate(3.0826417935062844,23.36462659637047) rotate(235.289)" d="M 11.25 11.25 L 0 0 L -11.25 11.25"></path></svg></div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="964c0b8a200dc88d531d11f2419a6e40"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 34;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="7858ed4fe20b601455af3d890f191b6c"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 33;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="8dd46864c152fc3744d57bbe70460c8c"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 35;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="8a8c35109bba10c2cd87cc0395c16422"><div style="text-shadow: 2px 2px #000000;">
+    <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 21.5px; height: auto;" data-block-id="a8c0505a7bbc55860e4046cd26b0496a">
+        <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+            <h1 style="text-align:center"><span style="font-size:0.9em">Let's turn data into info!</span></h1>
+        </div>
+    </div>
+
+
+
+    <div class="sl-block" data-block-type="text" data-name="text-eaf049" style="height: auto; width: 921px; left: 24px; top: 130px;" data-block-id="5b938d75916f147dfa56a4adc649b1f5">
+        <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; text-shadow: rgb(0, 0, 0) 2px 2px; font-size: 60%;">
+            <ul>
+                <li class="fragment" data-fragment-index="0" style="font-size:36px; text-align:left"><span style="font-size:0.85em"><span style="color:#FFFFFF">Existe un competidor (</span><span style="color:#40E0D0">H&amp;M</span><span style="color:#FFFFFF">) que está muy por detrás de los demás en métricas CWV y con evolución negativa en 2020.</span></span></li>
+                <li class="fragment" data-fragment-index="1" style="font-size:36px; text-align:left"><span style="font-size:0.85em"><span style="color:#FFFFFF">Hay desigualdad en la distribución de usuarios por dispositivo en función del competidor. ¿Los usuarios mobile de </span><span style="color:#40E0D0">Zara</span><span style="color:#FFFFFF"> usan APP en vez de la web? ¿</span><span style="color:#40E0D0">Desigual</span><span style="color:#FFFFFF"> tiene usuarios que prefieren visitar la web  en mobile o sus usuarios desktop no utilizan Chrome?</span></span></li>
+                <li class="fragment" data-fragment-index="2" style="font-size:36px; text-align:left"><span style="font-size:0.85em"><span style="color:#FFFFFF">Cada competidor pondrá esfuerzos en mejorar sus métricas en aquellos </span><span style="color:#40E0D0">dispositivos que aglutinen el mayor número de usuarios</span><span style="color:#FFFFFF"> para conseguir que el P75 de cada métrica esté dentro de los valores óptimos según Google.</span></span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="d3dedcf8aa7b8e341a28e695332bcd47">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+        <p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="12af96c9192a82b2936cb161f1050238">
+    <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36">
+            
+        <rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="be6f7e5de0171f640d59b0169f32adee">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+        <p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+    </div>
+</div></section><section data-id="8c9e9e134fdd95a8e971c88326f66572"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 21.5px; height: auto;" data-block-id="f175ef5c4773e8b42feb590edff78104">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">What else?</span></h1>
+    </div>
+</div>
+
+
+
+<div class="sl-block" data-block-type="image" data-name="image-db0ec4" style="width: 736.35px; height: 414.845px; left: 111.825px; top: 181.155px; min-width: 1px; min-height: 1px;" data-block-id="270f5a8d52e0e12e8c1d82db6662cd93">
+    <div class="sl-block-content fragment" style="z-index: 11;" data-fragment-index="0"><img style="" data-natural-width="1278" data-natural-height="720" data-lazy-loaded="" data-src="crux/05f70fb5c73a92af2f625c8be772c53d.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-97b32c" style="height: auto; width: 736.35px; left: 111.825px; top: 181.155px;" data-block-id="e86d80127de21d5be3f83bba0f77d270">
+    <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;" data-fragment-index="0">
+        <p style="font-size:3.5em"><strong>QUERIES</strong></p>
+    </div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 736.35px; left: 111.825px; top: 518px;" data-name="text-f0abff" data-block-id="9cbc6d0095c6dca57da69df2af430c02">
+    <div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0">
+        <p style="font-size:2em"><strong>QUERIES EVERYWHERE</strong></p>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="5d8856d30807c0fef563b0b3b067708d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="4583c7303473efb7bccd1c606e535b83"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 14;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="0c714ce2ecbe58f10922d43d7b22e94d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="545a7196cf9fecd6243d2164d0cf30f2"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 43px; height: auto;" data-name="text-a019f9" data-block-id="10d4037bb01e590e39d5c136af576842">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="code" data-name="code-b4214e" style="width: 889px; height: 470px; left: 35.5px; top: 148px;" data-block-id="24a0b9060818c1fc443a3c8a191301a4">
+    <div class="sl-block-content notranslate" data-highlight-theme="ir-black" data-code-frame="none" style="z-index: 11;">
+        <pre style="font-size: 24px; line-height: 29px;" class="sql"><code data-line-numbers="">SELECT
+  form_factor.name AS device,
+  lcp.start,
+  ROUND(SUM(lcp.density), 4) AS density
+FROM
+  `chrome-ux-report.country_es.202007`,
+  UNNEST(largest_contentful_paint.histogram.bin) AS lcp
+WHERE
+  origin = 'https://www.zara.com'
+GROUP BY
+  device,
+  start
+ORDER BY
+  device,
+  start</code></pre>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="73a3d05e7e4ebf39c07f1f099d7e3881"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="cef83fbbd44047e234a1265e0638a131"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="8d26243a8a0b492688f505fe14494d1f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="aa5b5447e98be5bc5f3af0e44ed393ed"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 45px; height: auto;" data-name="text-a019f9" data-block-id="10c3c9ff0735dd9bb4f78556488a6b79">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-07c7d4" data-block-id="66888b7c6f8e3c1289580e497059d899" style="width: 806.4px; height: 497.194px; left: 76.8px; top: 146.403px; min-width: 1px; min-height: 1px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="785" data-natural-height="484" data-lazy-loaded="" data-src="crux/263e64a1d2d5b11cafcb647e8c2fbbbc.png"></div></div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="c62204947fc9ab8f29eeb76bf2acec89"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="3610374e4448137bd5ea8b2694ad6a46"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="14613c97d5b70b6f8057ea6774a8c133"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="ada1176c9ae6ba8e762f9c5f96e4fdd4"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 44px; height: auto;" data-name="text-a019f9" data-block-id="af4d56dc04efc2d2e0d4261d6ba8c935">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+<div class="sl-block" data-block-type="code" data-name="code-b4214e" style="width: 900px; height: 470px; left: 35.5px; top: 149px;" data-block-id="3f118626a3bb3b59a761c7b597dfd8a7">
+    <div class="sl-block-content notranslate" data-highlight-theme="ir-black" data-code-frame="none" style="z-index: 11;">
+        <pre style="font-size: 20px; line-height: 24px;" class="sql"><code data-line-numbers="">SELECT
+  yyyymm,
+  `chrome-ux-report`.experimental.GET_COUNTRY(country_code) AS country,
+  fast_lcp AS good_lcp,
+  avg_lcp AS ni_lcp,
+  slow_lcp AS poor_lcp,
+FROM
+  `chrome-ux-report.materialized.country_summary`
+WHERE
+  yyyymm &gt;= 202001 AND
+  country_code IN ('es', 'gb', 'fr') AND
+  origin = 'https://www.zara.com'
+  
+ORDER BY
+  yyyymm DESC,
+  country</code></pre>
+    </div>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="88e466643a9720fb54c1498999a0106b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="47303d9fd27d5b52cfa773b6611423dd"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 12;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="61f8489561b8108b103f1b875e31b036"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="8f6fce46955947d08d88620770647917"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 1px; height: auto;" data-name="text-a019f9" data-block-id="8ed39dbf28d44950c79d46143802598a">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-f10952" data-block-id="177a4051b4bfddd3ed2edf0472814df2" style="width: 464.298px; height: 275.51px; left: 7.127px; top: 90.245px; min-width: 1px; min-height: 1px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="696" data-natural-height="413" data-lazy-loaded="" data-src="crux/362e0c209d61d2a43a54490ab24bf518.png"></div></div>
+<div class="sl-block" data-block-type="image" data-name="image-3f7c39" data-block-id="d52e377bd29fc3df871aff15eee6893e" style="width: 464.298px; height: 275.51px; left: 231.127px; top: 228px; min-width: 1px; min-height: 1px;"><div class="sl-block-content fragment" style="z-index: 12;" data-fragment-index="0"><img style="" data-natural-width="696" data-natural-height="413" data-lazy-loaded="" data-src="crux/07224b4a0446f7a81ca552144149416e.png"></div></div>
+<div class="sl-block" data-block-type="image" data-name="image-c2a9a1" data-block-id="e7e0fb490c413194772aff2b3e359c17" style="width: 464.298px; height: 275.51px; left: 487.851px; top: 394px; min-width: 1px; min-height: 1px;"><div class="sl-block-content fragment" style="z-index: 13;" data-fragment-index="1"><img style="" data-natural-width="696" data-natural-height="413" data-lazy-loaded="" data-src="crux/073ab70cefa46b6476f2f5b751acb3e1.png"></div></div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="a218121cc704df20b26f9bf1c4b8f9b1"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="8e564b082631e49d65ba883d0479f33b"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 14;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="d63af3682b6cf7e4c58c3b94454ff33b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="0b19fce17c14a04500b1e07a7cacffdf"><div style="text-shadow: 2px 2px #000000;">
+  <div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 70px; height: auto;" data-name="text-a019f9" data-block-id="2fc8606ff053f8f1af0dc2a1fafb5b4a">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 10;">
+        <h1 style="text-align:center"><span style="font-size:0.9em">Let's SQL it!</span></h1>
+    </div>
+</div>
+
+
+
+
+
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-a80b38" data-block-id="c5890bc9df5989e6ff7b050adbdd292a" style="width: 695.761px; height: 435.206px; left: 132.12px; top: 177px; min-width: 1px; min-height: 1px;"><div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="980" data-natural-height="613" data-lazy-loaded="" data-src="crux/224691f5187665721b0497160d4b36ac.png"></div></div>
+<div class="sl-block" data-block-type="text" data-name="text-97b32c" style="height: auto; width: 736.35px; left: 111.825px; top: 133.155px;" data-block-id="b4f6ea6642fee5aab040de7c74971555">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12; text-align: center;">
+<p style="font-size:3.5em"><span style="font-size:0.7em"><strong>TO INFINITY</strong></span></p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 736.35px; left: 111.825px; top: 523.206px;" data-block-id="fb41dfe8f30431e2d508c16e772a6096" data-name="text-9ecf98">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13; text-align: center;">
+<p><span style="font-size:73.5px"><strong>AND BEYOND!</strong></span></p>
+</div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="ba166ccb1a5d733548ab84ec24aba7f0"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="0c49f4247b78771cc9e075ad0058e392"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 14;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="9449757176580383dec2c87bbbb9121a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section><section data-id="f8e38dab364596593685028753406caa"><div class="sl-block" data-block-type="text" data-name="text-805493" data-block-id="ec25201ef42f4fb9781a2a00302fd949" style="height: auto; width: 600px; left: 28px; top: 247.5px; text-shadow: 2px 2px #000000;">
+    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; color: rgb(255, 255, 255);">
+<ul>
+	<li style="color:rgb(0, 0, 0)"><span style="color:#FFFFFF">SEO Specialist en</span></li>
+	<li style="color:rgb(0, 0, 0)">
+<span style="color:#FFFFFF">Comunidad </span><a href="https://mujeresenseo.es/" target="_blank"><span style="color:#40E0D0"><strong>mujeresenseo.es</strong></span></a>
+</li>
+	<li style="color:rgb(0, 0, 0)">
+<span style="color:#FFFFFF">Twittera a ratos en </span><a href="https://twitter.com/guaca" target="_blank"><span style="color:#40E0D0"><strong>twitter.com/guaca</strong></span></a>
+</li>
+	<li style="color:rgb(0, 0, 0)">
+<span style="color:#FFFFFF">Tengo un blog abandonado en </span><a href="https://estelafranco.com" target="_blank"><span style="color:#40E0D0"><strong>estelafranco.com</strong></span></a>
+</li>
+</ul>
+</div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-2c2948" data-block-id="be3881f8a052a24abaa82568314bed5a" style="width: 246px; height: 246px; left: 671px; top: 237px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 11;"><img style="" data-natural-width="1350" data-natural-height="1350" data-lazy-loaded="" data-src="crux/ab52ba710e43be1cb00fce3cbf3e8167.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" style="width: 960px; left: 0px; top: 48.5px; height: auto;" data-block-id="1df02764729e7a154a0e3fba2451624c" data-name="text-6b6052">
+    <div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 12;">
+        <h1 style="text-align:center"><span style="font-size:1.2em; text-shadow: 2px 2px #000000;">¡GRACIAS!</span></h1>
+    </div>
+</div>
+<div class="sl-block" data-block-type="image" data-name="image-91523a" data-block-id="c1fd5db83fe21a03e4614c656fea8beb" style="width: 431.419px; height: 305px; left: 184.291px; top: 107px; min-width: 1px; min-height: 1px;">
+    <div class="sl-block-content" style="z-index: 13;"><img style="" data-natural-width="1191" data-natural-height="842" data-lazy-loaded="" data-src="crux/700d7ecd17da47ae3b6ac1b26d062fd8.png"></div>
+</div>
+<div class="sl-block" data-block-type="text" data-name="text-be957c" style="height: auto; width: 220px; left: 3px; top: 660px;" data-block-id="8c0d6fd588209e475fe7eacaa22ea180"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;">
+<p style="text-align:left"><span style="font-size:0.7em"><strong>#DOYOUSEO</strong></span></p>
+</div></div>
+<div class="sl-block" data-block-type="shape" data-name="shape-fc05b6" style="width: 960px; height: 35.5px; left: 0px; top: 664.5px;" data-block-id="bde9f47361d8f715c40328fad5ef7492"><div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(34, 34, 34)" data-shape-stretch="true" style="z-index: 14;"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" preserveaspectratio="none" viewbox="0 0 960 36"><rect width="960" height="35.5" rx="0" ry="0" class="shape-element" fill="rgb(34, 34, 34)"></rect></svg></div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 220px; left: 737px; top: 660px;" data-name="text-761285" data-block-id="ff3ad805aafe138c157475b857da960d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;">
+<p style="text-align: right;"><span style="font-size:0.7em"><strong>@guaca</strong></span></p>
+</div></div></section>
+			</div>
+		</div>
+
+		<script>
+			var SLConfig = {"deck": {"id":1937621,"slug":"crux","title":"Copy of Core Web Vitals: Benchmark de competidores con CrUX y BigQuery","description":"Cómo hacer un benchmark de métricas de Core Web Vitals de tus competidores con los datos disponibles en el Chrome User Experience report y BigQuery","width":960,"height":700,"margin":0.05,"visibility":"all","published_at":"2020-10-01T19:18:25.637Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/a539d902f2921143a7f98d136bfc5b78/thumb.jpg?1601564029","view_count":1,"user":{"id":787594,"username":"carmenansio","name":"Carmen Ansio Ruiz","description":"","thumbnail_url":"https://lh6.googleusercontent.com/-0UBfU3aL6Co/AAAAAAAAAAI/AAAAAAAAWAk/tglCL8SGb2w/photo.jpg?sz=50","account_type":"pro","team_id":null,"settings":{"id":638803,"present_controls":true,"present_upsizing":true,"present_pointer":false,"present_notes":true,"default_deck_tag_id":null}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"grey-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"shuffle":false,"should_loop":false,"share_notes":false,"slide_number":false,"slide_count":35,"rtl":false,"version":2,"collaborative":false,"deck_user_editor_limit":3,"data_updated_at":1601579905653,"font_typekit":null,"font_google":null,"time_limit":null,"navigation_mode":"default","upsizing_enabled":true,"notes":{}}};
+
+
+			// Use local fonts
+			SLConfig.fonts_url = 'lib/fonts/';
+		</script>
+
+		<script src="lib/reveal.js"></script>
+		<script src="lib/reveal-plugins.js"></script>
+		<script src="lib/offline.js"></script>
+
+		<!-- Initialize the presentation -->
+		<script>
+			Reveal.initialize({
+				width: 960,
+				height: 700,
+				margin: 0.05,
+				
+
+				hash: true,
+				controls: true,
+				progress: true,
+				mouseWheel: false,
+				showNotes: false,
+				slideNumber: false,
+				fragmentInURL: true,
+
+				autoSlide: 0,
+				autoSlideStoppable: true,
+
+				autoAnimateMatcher: SL.deck.AutoAnimate.matcher,
+
+				center: false,
+				shuffle: false,
+				loop: false,
+				rtl: false,
+				navigationMode: "default",
+
+				transition: "slide",
+				backgroundTransition: "slide",
+
+				highlight: {
+					escapeHTML: false
+				},
+
+				plugins: [ RevealZoom, RevealNotes, RevealMarkdown, RevealHighlight ]
+			});
+		</script>
+
+		
+
+	</body>
+</html>
